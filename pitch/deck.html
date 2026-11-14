@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>LeftOnTable — Pitch Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=block" rel="stylesheet">
+<style>
+  :root {
+    --bg: #000; --panel: #0a0a0a; --panel2: #111; --line: #262626; --line2: #3a3a3a;
+    --fg: #f2f1ec; --muted: #9a9993; --dim: #63625e; --money: #4ade80; --warn: #f5c451;
+  }
+  @page { size: 1920px 1080px; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--fg); font-family: "Geist", system-ui, sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .slide { position: relative; width: 1920px; height: 1080px; overflow: hidden; page-break-after: always; break-after: page; padding: 96px 112px 120px; background: var(--bg); }
+  .slide:last-child { page-break-after: auto; break-after: auto; }
+  .display { font-family: "Chakra Petch", sans-serif; font-weight: 700; letter-spacing: -0.025em; line-height: 1.02; }
+  .mono { font-family: "Geist Mono", monospace; }
+  .eyebrow { font-family: "Geist Mono", monospace; font-size: 18px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+  .money { color: var(--money); }
+  .muted { color: var(--muted); }
+  .dim { color: var(--dim); }
+  .card { background: var(--panel); border: 1px solid var(--line); }
+  .halftone { position: absolute; inset: 0; background-image: radial-gradient(rgba(242,241,236,.14) 1.4px, transparent 1.7px); background-size: 10px 10px; pointer-events: none; }
+  .scan { position: absolute; inset: 0; background-image: repeating-linear-gradient(0deg, rgba(255,255,255,.03) 0 1px, transparent 1px 3px); }
+  .art { width: 100%; height: 100%; object-fit: cover; display: block; filter: contrast(1.05); }
+  .topbar { position: absolute; top: 48px; left: 112px; right: 112px; display: flex; justify-content: space-between; align-items: center; }
+  .foot { position: absolute; bottom: 44px; left: 112px; right: 112px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); padding-top: 18px; }
+  .foot span { font-family: "Geist Mono", monospace; font-size: 15px; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); }
+  .brand { display: flex; align-items: center; gap: 12px; font-family: "Chakra Petch"; font-weight: 700; font-size: 22px; }
+  .h1 { font-size: 88px; }
+  .h2 { font-size: 64px; }
+  .lead { font-size: 28px; line-height: 1.45; color: var(--muted); }
+  .chip { display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--line2); padding: 10px 16px; font-family: "Geist Mono"; font-size: 16px; letter-spacing: .14em; text-transform: uppercase; color: var(--fg); }
+  .chip.green { border-color: rgba(74,222,128,.45); background: rgba(74,222,128,.08); color: var(--money); }
+  .tag { font-family: "Geist Mono"; font-size: 15px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+  .num { font-family: "Geist Mono"; font-size: 15px; color: var(--dim); }
+  .row { display: flex; }
+  .grid { display: grid; }
+  .src { font-family: "Geist Mono"; font-size: 13px; color: var(--dim); line-height: 1.5; }
+  table { border-collapse: collapse; width: 100%; }
+  .tbl th { font-family: "Geist Mono"; font-weight: 400; font-size: 15px; letter-spacing: .12em; text-transform: uppercase; color: var(--dim); text-align: left; padding: 16px 20px; border-bottom: 1px solid var(--line); }
+  .tbl td { padding: 18px 20px; border-bottom: 1px solid var(--line); font-size: 22px; }
+  .tbl tr:last-child td { border-bottom: 0; }
+  .r { text-align: right !important; }
+  .check { color: var(--money); font-family: "Geist Mono"; }
+  .cross { color: var(--dim); font-family: "Geist Mono"; }
+  .step { width: 56px; height: 56px; border: 1px solid var(--line2); display: flex; align-items: center; justify-content: center; font-family: "Geist Mono"; font-size: 18px; }
+  .pixel { position: absolute; background: var(--money); }
+  /* single-slide preview: deck.html?only=3 */
+  body.only .slide { display: none; }
+  body.only .slide.show { display: block; }
+</style>
+</head>
+<body>
+
+<!-- 01 TITLE -->
+<section class="slide">
+  <div class="halftone" style="-webkit-mask-image: radial-gradient(ellipse at 75% 60%, #000, transparent 65%);"></div>
+  <div class="topbar">
+    <div class="brand">
+      <svg width="34" height="34" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="13" r="9" stroke="#f2f1ec" stroke-width="2.4"/><path d="M16 8.5v9M13.2 10.6c0-1.1 1.2-1.8 2.8-1.8s2.8.7 2.8 1.8c0 2.6-5.6 1.3-5.6 3.9 0 1.1 1.2 1.9 2.8 1.9s2.8-.8 2.8-1.9" stroke="#f2f1ec" stroke-width="1.6" stroke-linecap="round"/><path d="M2 26h28" stroke="#f2f1ec" stroke-width="2.4"/><path d="M6 26v4M26 26v4" stroke="#f2f1ec" stroke-width="2.4"/></svg>
+      LeftOnTable
+    </div>
+    <span class="eyebrow">Track 01 · Money</span>
+  </div>
+  <div class="grid" style="grid-template-columns: 1.15fr 1fr; gap: 72px; align-items: center; height: 100%; padding-top: 30px;">
+    <div>
+      <div class="eyebrow" style="margin-bottom: 36px;">— For US employees · Web · B2C</div>
+      <h1 class="display" style="font-size: 104px;">Get every dollar your job <span class="money">already promised</span> you.</h1>
+      <p class="lead" style="margin-top: 40px; max-width: 860px;">Upload your benefits guide. AI reads the fine print, checks it against your paycheck and shows how much money you're leaving on the table, and exactly how to claim it.</p>
+      <div class="row" style="gap: 14px; margin-top: 48px; flex-wrap: wrap;">
+        <span class="chip green">Free scan · no sign-up</span>
+        <span class="chip">60 seconds</span>
+        <span class="chip">Every number cited</span>
+      </div>
+    </div>
+    <div class="card" style="position: relative; height: 640px; overflow: hidden;">
+      <img class="art" src="../public/art/hand-laptop.png">
+      <div class="scan"></div>
+      <div style="position:absolute; left:0; right:0; bottom:0; padding: 80px 32px 28px; background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.92) 38%, #000 60%);">
+        <div class="tag">Sample employee · Acme Corp guide · 31 pages</div>
+        <div class="display money" style="font-size: 96px; margin-top: 10px;">$10,992<span style="font-size: 40px; color: var(--muted);">/yr</span></div>
+        <div class="mono muted" style="font-size: 18px; margin-top: 6px;">left on the table · found in ~10 seconds</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>github.com/Futurizm/leftontable</span><span>01 / 10</span></div>
+</section>
+
+<!-- 02 PROBLEM -->
+<section class="slide">
+  <div class="topbar"><span class="eyebrow">02 / The problem</span><span class="eyebrow">LeftOnTable</span></div>
+  <h2 class="display h2" style="margin-top: 40px; max-width: 1500px;">Your employer wrote it down.<br><span class="muted">Nobody read it to you.</span></h2>
+  <p class="lead" style="margin-top: 28px; max-width: 1300px;">Every year US employees get a 30–50 page benefits guide. It's full of matches, tax breaks and stipends that only pay out if you act. Most people click "keep my elections" and move on.</p>
+  <div class="grid" style="grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 64px;">
+    <div class="card" style="padding: 40px;">
+      <div class="row" style="justify-content: space-between;"><span class="num">#01</span><span class="tag">401(k) match</span></div>
+      <div class="display money" style="font-size: 112px; margin-top: 28px;">1 in 4</div>
+      <p style="font-size: 26px; line-height: 1.4; margin-top: 18px;">workers don't save enough to get their full employer match: a typical <b>$1,336/yr</b> of free money, <b>$24B</b> a year in total.</p>
+    </div>
+    <div class="card" style="padding: 40px;">
+      <div class="row" style="justify-content: space-between;"><span class="num">#02</span><span class="tag">FSA forfeitures</span></div>
+      <div class="display money" style="font-size: 112px; margin-top: 28px;">$4.5B</div>
+      <p style="font-size: 26px; line-height: 1.4; margin-top: 18px;">forfeited in Flexible Spending Accounts in 2023. <b>47%</b> of account holders lost money to use-it-or-lose-it rules.</p>
+    </div>
+    <div class="card" style="padding: 40px;">
+      <div class="row" style="justify-content: space-between;"><span class="num">#03</span><span class="tag">Plan choice</span></div>
+      <div class="display money" style="font-size: 112px; margin-top: 28px;">76%</div>
+      <p style="font-size: 26px; line-height: 1.4; margin-top: 18px;">of workers make health benefit decisions without fully understanding their plan. Half of enrollees spend <b>under an hour</b> choosing.</p>
+    </div>
+  </div>
+  <p class="src" style="position: absolute; bottom: 104px; left: 112px; right: 112px;">Sources: Financial Engines "Missing Out" (via SHRM, PlanSponsor) · EBRI data via Money.com (2023 tax year) · Aflac WorkForces Report · EBRI Consumer Engagement in Health Care Survey.</p>
+  <div class="foot"><span>The problem</span><span>02 / 10</span></div>
+</section>
+
+<!-- 03 WHO -->
+<section class="slide">
+  <div class="topbar"><span class="eyebrow">03 / Who we sell to</span><span class="eyebrow">LeftOnTable</span></div>
+  <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 72px; margin-top: 40px;">
+    <div>
+      <h2 class="display h2">Working adults with<br>a benefits package<br><span class="money">they never decoded.</span></h2>
+      <div style="margin-top: 52px; display: grid; gap: 22px;">
+        <div style="display:grid; grid-template-columns: 190px 1fr; gap: 24px; align-items: baseline;"><span class="tag">Who</span><span style="font-size: 26px;">Full-time US employees, 25–45, salaried $50k–$150k</span></div>
+        <div style="display:grid; grid-template-columns: 190px 1fr; gap: 24px; align-items: baseline;"><span class="tag">Where</span><span style="font-size: 26px;">Companies with 100+ people: the richest benefit packages</span></div>
+        <div style="display:grid; grid-template-columns: 190px 1fr; gap: 24px; align-items: baseline;"><span class="tag">Life stage</span><span style="font-size: 26px;">Partner, kids, daycare, commute, student loans</span></div>
+        <div style="display:grid; grid-template-columns: 190px 1fr; gap: 24px; align-items: baseline;"><span class="tag">Pain</span><span style="font-size: 26px;">Busy, not a benefits expert, afraid of picking wrong</span></div>
+      </div>
+      <div class="eyebrow" style="margin-top: 56px;">When they need us</div>
+      <div class="row" style="gap: 12px; margin-top: 18px; flex-wrap: wrap;">
+        <span class="chip green">Open enrollment · every November</span>
+        <span class="chip">New job · 31 days to enroll</span>
+        <span class="chip">Baby · marriage · move</span>
+        <span class="chip">Every payday</span>
+      </div>
+    </div>
+    <div class="card" style="padding: 44px; position: relative;">
+      <div class="row" style="justify-content: space-between;"><span class="tag">Persona</span><span class="num">illustrative</span></div>
+      <div class="display" style="font-size: 52px; margin-top: 20px;">Jordan Rivera, 34</div>
+      <div class="mono muted" style="font-size: 18px; margin-top: 8px;">Chicago · married · toddler in daycare · $90k</div>
+      <div style="margin-top: 36px; border-top: 1px solid var(--line);">
+        <div class="row" style="justify-content: space-between; padding: 18px 0; border-bottom: 1px solid var(--line); font-size: 23px;"><span>Picked the PPO "to be safe"</span><span class="money mono">−$3,024</span></div>
+        <div class="row" style="justify-content: space-between; padding: 18px 0; border-bottom: 1px solid var(--line); font-size: 23px;"><span>Pays daycare with after-tax money</span><span class="money mono">−$1,845</span></div>
+        <div class="row" style="justify-content: space-between; padding: 18px 0; border-bottom: 1px solid var(--line); font-size: 23px;"><span>Saves 3% when the match needs 6%</span><span class="money mono">−$1,800</span></div>
+        <div class="row" style="justify-content: space-between; padding: 18px 0; border-bottom: 1px solid var(--line); font-size: 23px;"><span>Never enrolled in commuter subsidy</span><span class="money mono">−$1,525</span></div>
+        <div class="row" style="justify-content: space-between; padding: 18px 0; border-bottom: 1px solid var(--line); font-size: 23px;"><span>Stipends, wellness credit &amp; FSA unused</span><span class="money mono">−$2,798</span></div>
+      </div>
+      <div class="row" style="justify-content: space-between; align-items: baseline; margin-top: 28px;">
+        <span class="tag">Left on the table</span>
+        <span class="display money" style="font-size: 72px;">$10,992/yr</span>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Who we sell to</span><span>03 / 10</span></div>
+</section>
+
+<!-- 04 PRODUCT -->
+<section class="slide">
+  <div class="topbar"><span class="eyebrow">04 / The product</span><span class="eyebrow">LeftOnTable</span></div>
+  <div class="grid" style="grid-template-columns: 0.9fr 1.1fr; gap: 64px; margin-top: 40px;">
+    <div>
+      <h2 class="display h2">One upload.<br>A ranked list of <span class="money">real dollars.</span></h2>
+      <div style="margin-top: 52px; display: grid; gap: 30px;">
+        <div class="row" style="gap: 24px;"><div class="step">01</div><div><div style="font-size: 27px; font-weight: 600;">Upload the benefits guide</div><div class="muted" style="font-size: 21px; margin-top: 4px;">Any US employer PDF. Read privately in the browser.</div></div></div>
+        <div class="row" style="gap: 24px;"><div class="step">02</div><div><div style="font-size: 27px; font-weight: 600;">Add a paystub (optional)</div><div class="muted" style="font-size: 21px; margin-top: 4px;">PDF or phone photo. Auto-fills salary, 401(k) %, current plan.</div></div></div>
+        <div class="row" style="gap: 24px;"><div class="step">03</div><div><div style="font-size: 27px; font-weight: 600;">Answer 6 quick questions</div><div class="muted" style="font-size: 21px; margin-top: 4px;">State, family, childcare, commute, medical usage.</div></div></div>
+        <div class="row" style="gap: 24px;"><div class="step" style="border-color: var(--money); color: var(--money);">04</div><div><div style="font-size: 27px; font-weight: 600;">Claim your money</div><div class="muted" style="font-size: 21px; margin-top: 4px;">Steps, deadlines (.ics), HR email, cited sources, live recalculation.</div></div></div>
+      </div>
+    </div>
+    <!-- results mockup -->
+    <div class="card" style="padding: 36px; position: relative; overflow: hidden;">
+      <div class="halftone" style="opacity:.6; -webkit-mask-image: radial-gradient(ellipse at 85% 10%, #000, transparent 55%);"></div>
+      <div class="tag" style="position: relative;">Acme Corp · 2027 benefits</div>
+      <div class="muted" style="font-size: 20px; margin-top: 18px; position: relative;">You're leaving</div>
+      <div class="display money" style="font-size: 104px; position: relative;">$10,992</div>
+      <div style="font-size: 21px; position: relative;">on the table every year: about <span class="money">$423</span> per paycheck.</div>
+      <div style="margin-top: 28px; display: grid; gap: 12px; position: relative;">
+        <div style="border: 1px solid var(--line2); background: #050505; padding: 20px 24px;">
+          <div class="row" style="justify-content: space-between; align-items: flex-start;">
+            <div><div class="row" style="gap: 14px;"><span class="num">#01</span><span class="tag">Health plan</span></div><div style="font-size: 24px; font-weight: 600; margin-top: 8px;">Cheaper plan for your usage: Acme Saver HDHP</div></div>
+            <div class="display money" style="font-size: 44px;">$3,024</div>
+          </div>
+          <div style="margin-top: 14px; border-left: 2px solid var(--line2); padding: 8px 16px; background: #0b0b0b;">
+            <div style="font-size: 17px; font-style: italic; color: #d8d7d2;">"Acme contributes $750 per year to your Health Savings Account for Employee only coverage and $1,500 per year for all other coverage tiers"</div>
+            <div class="mono" style="font-size: 13px; margin-top: 6px;"><span class="dim">acme-benefits-guide · page 11 ·</span> <span class="money">✓ found verbatim in your document</span></div>
+          </div>
+        </div>
+        <div class="row" style="justify-content: space-between; border: 1px solid var(--line); padding: 16px 24px; font-size: 22px;"><span><span class="num">#02</span>&nbsp;&nbsp;Pay daycare pre-tax (Dependent Care FSA)</span><span class="display money" style="font-size: 32px;">$1,845</span></div>
+        <div class="row" style="justify-content: space-between; border: 1px solid var(--line); padding: 16px 24px; font-size: 22px;"><span><span class="num">#03</span>&nbsp;&nbsp;Unclaimed 401(k) match</span><span class="display money" style="font-size: 32px;">$1,800</span></div>
+        <div class="row" style="justify-content: space-between; border: 1px solid var(--line); padding: 16px 24px; font-size: 22px;"><span><span class="num">#04</span>&nbsp;&nbsp;Commute on pre-tax money + subsidy</span><span class="display money" style="font-size: 32px;">$1,525</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Live product, not a mockup: try the sample employee button</span><span>04 / 10</span></div>
+</section>
+
+<!-- 05 HOW IT WORKS / TRUST -->
+<section class="slide">
+  <div class="topbar"><span class="eyebrow">05 / Does it work</span><span class="eyebrow">LeftOnTable</span></div>
+  <h2 class="display h2" style="margin-top: 40px;">AI reads. <span class="money">Code counts.</span> Every dollar has a source.</h2>
+  <p class="lead" style="margin-top: 22px; max-width: 1450px;">The model never invents a number. It only extracts facts, with a verbatim quote and page. A deterministic engine does all the math, so results are reproducible and checkable.</p>
+  <div class="row" style="gap: 0; margin-top: 44px; align-items: stretch;">
+    <div class="card" style="flex: 1; padding: 30px;"><div class="num">01 · BROWSER</div><div style="font-size: 26px; font-weight: 600; margin-top: 14px;">pdf.js reads the PDF</div><div class="muted" style="font-size: 19px; margin-top: 10px; line-height: 1.4;">Text per page, on-device. Files are never uploaded or stored.</div></div>
+    <div class="mono dim" style="display:flex; align-items:center; padding: 0 14px; font-size: 26px;">→</div>
+    <div class="card" style="flex: 1; padding: 30px;"><div class="num">02 · VERTEX AI</div><div style="font-size: 26px; font-weight: 600; margin-top: 14px;">Gemini 3.5 Flash</div><div class="muted" style="font-size: 19px; margin-top: 10px; line-height: 1.4;">Strict JSON schema: match tiers, plans, premiums, accounts, perks + quotes.</div></div>
+    <div class="mono dim" style="display:flex; align-items:center; padding: 0 14px; font-size: 26px;">→</div>
+    <div class="card" style="flex: 1; padding: 30px; border-color: rgba(74,222,128,.45);"><div class="num money">03 · VERIFIER</div><div style="font-size: 26px; font-weight: 600; margin-top: 14px;">Quote check</div><div class="muted" style="font-size: 19px; margin-top: 10px; line-height: 1.4;">Every quote is matched against the page text and marked ✓ verified.</div></div>
+    <div class="mono dim" style="display:flex; align-items:center; padding: 0 14px; font-size: 26px;">→</div>
+    <div class="card" style="flex: 1; padding: 30px;"><div class="num">04 · RULES ENGINE</div><div style="font-size: 26px; font-weight: 600; margin-top: 14px;">Deterministic math</div><div class="muted" style="font-size: 19px; margin-top: 10px; line-height: 1.4;">2026 IRS limits, federal + 50-state + FICA marginal rates, plan cost model.</div></div>
+  </div>
+  <div class="grid" style="grid-template-columns: 1fr 64px 1fr; gap: 0; margin-top: 36px; align-items: stretch;">
+    <div class="card" style="padding: 24px 30px;">
+      <div class="row" style="justify-content: space-between;"><span class="tag">AI extracts · page 21</span><span class="mono money" style="font-size: 15px;">✓ quote verified</span></div>
+      <pre class="mono" style="font-size: 18px; line-height: 1.5; margin-top: 12px; color: #d8d7d2;">"matchTiers": [
+  { "matchRate": 1,   "percentOfPay": 4 },
+  { "matchRate": 0.5, "percentOfPay": 2 }
+]</pre>
+    </div>
+    <div class="mono dim" style="display:flex; align-items:center; justify-content:center; font-size: 30px;">→</div>
+    <div class="card" style="padding: 24px 30px; border-color: rgba(74,222,128,.45);">
+      <div class="tag">Engine computes · Jordan, $90k, saving 3%</div>
+      <div class="mono" style="font-size: 19px; line-height: 1.75; margin-top: 12px; color: #d8d7d2;">Full match: save 6% → get 5% of pay<br>Now: save 3% → get 3% of pay<br><span class="money">$90,000 × (5% − 3%) = $1,800 / yr</span></div>
+    </div>
+  </div>
+  <div class="grid" style="grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 34px;">
+    <div><div class="display money" style="font-size: 72px;">9</div><div class="tag" style="margin-top: 6px;">benefit types checked</div></div>
+    <div><div class="display money" style="font-size: 72px;">~10s</div><div class="tag" style="margin-top: 6px;">for a 30–47 page guide</div></div>
+    <div><div class="display money" style="font-size: 72px;">0</div><div class="tag" style="margin-top: 6px;">files stored · no login</div></div>
+    <div><div class="display money" style="font-size: 72px;">Live</div><div class="tag" style="margin-top: 6px;">recalc as you edit inputs</div></div>
+  </div>
+  <div class="foot"><span>Next.js · TypeScript · Vertex AI · pdf.js</span><span>05 / 10</span></div>
+</section>
+
+<!-- 06 TESTED -->
+<section class="slide">
+  <div class="topbar"><span class="eyebrow">06 / Tested on real documents</span><span class="eyebrow">LeftOnTable</span></div>
+  <div class="grid" style="grid-template-columns: 1.35fr 1fr; gap: 72px; margin-top: 40px;">
+    <div>
+      <h2 class="display h2">Works on any guide.<br><span class="money">Not hardcoded.</span></h2>
+      <p class="lead" style="margin-top: 22px;">We ran the pipeline on public 2026 benefits guides from real US employers: companies, a university, a city government and a national lab.</p>
+      <div class="card" style="margin-top: 40px;">
+        <table class="tbl">
+          <thead><tr><th>Employer guide</th><th class="r">Pages</th><th class="r">Time</th><th class="r">Quotes verified</th></tr></thead>
+          <tbody>
+            <tr><td>DC Government 2026</td><td class="r mono">47</td><td class="r mono">11s</td><td class="r check">16/16</td></tr>
+            <tr><td>ADP TotalSource FY26</td><td class="r mono">38</td><td class="r mono">25s*</td><td class="r check">16/16</td></tr>
+            <tr><td>Lawrence Livermore Nat'l Lab 2026</td><td class="r mono">32</td><td class="r mono">8s</td><td class="r check">13/13</td></tr>
+            <tr><td>Acme Corp 2027 (demo)</td><td class="r mono">31</td><td class="r mono">10s</td><td class="r check">20/20</td></tr>
+            <tr><td>Bentley University 2026</td><td class="r mono">24</td><td class="r mono">8s</td><td class="r check">12/12</td></tr>
+            <tr><td>Ford Family Foundation 2026</td><td class="r mono">1</td><td class="r mono">5s</td><td class="r check">5/5</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="src" style="margin-top: 14px;">* measured before switching to low-latency thinking mode. Acme Corp is a fictional demo employer.</p>
+    </div>
+    <div style="display: grid; gap: 22px; align-content: start; padding-top: 12px;">
+      <div class="card" style="padding: 36px;"><div class="display money" style="font-size: 120px;">100%</div><div style="font-size: 25px; margin-top: 6px;">of 82 evidence quotes found verbatim in the source document</div></div>
+      <div class="card" style="padding: 36px;"><div class="tag">What it got right</div>
+        <ul style="list-style: none; margin-top: 18px; display: grid; gap: 14px; font-size: 22px;">
+          <li><span class="money mono">+</span>&nbsp; Tiered match: "100% of first 4% + 50% of next 2%"</li>
+          <li><span class="money mono">+</span>&nbsp; 8 medical plans with premiums by coverage tier</li>
+          <li><span class="money mono">+</span>&nbsp; Region-only plans flagged, never recommended</li>
+          <li><span class="money mono">+</span>&nbsp; A $300 wellness credit buried on page 24</li>
+          <li><span class="money mono">+</span>&nbsp; Paystub match: auto-detects your current plan</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Does it work</span><span>06 / 10</span></div>
+</section>
+
+<!-- 07 WHAT WE SELL -->
+<section class="slide">
+  <div class="topbar"><span class="eyebrow">07 / What we sell</span><span class="eyebrow">LeftOnTable</span></div>
+  <div class="row" style="justify-content: space-between; align-items: flex-end; margin-top: 40px;">
+    <h2 class="display h2">Free to find it.<br><span class="money">Paid to never lose it again.</span></h2>
+    <span class="chip green">Pays for itself on the first paycheck</span>
+  </div>
+  <div class="grid" style="grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 56px;">
+    <div class="card" style="padding: 40px;">
+      <div class="tag">Scan</div>
+      <div class="row" style="align-items: baseline; gap: 12px; margin-top: 16px;"><span class="display" style="font-size: 84px;">$0</span><span class="mono muted" style="font-size: 18px;">forever</span></div>
+      <p class="muted" style="font-size: 21px; margin-top: 6px;">The hook: see your number.</p>
+      <ul style="list-style: none; margin-top: 26px; border-top: 1px solid var(--line); padding-top: 22px; display: grid; gap: 12px; font-size: 21px;">
+        <li><span class="money mono">+</span>&nbsp; Full benefits scan</li><li><span class="money mono">+</span>&nbsp; Paystub cross-check</li><li><span class="money mono">+</span>&nbsp; Claim plan &amp; deadlines</li>
+      </ul>
+    </div>
+    <div class="card" style="padding: 40px; border-color: rgba(242,241,236,.6); position: relative;">
+      <span style="position: absolute; top: -1px; right: 32px; background: var(--fg); color: #000; font-family: 'Geist Mono'; font-size: 14px; letter-spacing: .14em; padding: 8px 12px;">CORE PRODUCT</span>
+      <div class="tag">Plus</div>
+      <div class="row" style="align-items: baseline; gap: 12px; margin-top: 16px;"><span class="display" style="font-size: 84px;">$6</span><span class="mono muted" style="font-size: 18px;">/ month</span></div>
+      <p class="muted" style="font-size: 21px; margin-top: 6px;">Keeps checking after every payday.</p>
+      <ul style="list-style: none; margin-top: 26px; border-top: 1px solid var(--line); padding-top: 22px; display: grid; gap: 12px; font-size: 21px;">
+        <li><span class="money mono">+</span>&nbsp; Paycheck monitoring</li><li><span class="money mono">+</span>&nbsp; FSA use-it-or-lose-it alerts</li><li><span class="money mono">+</span>&nbsp; Life-event re-checks</li><li><span class="money mono">+</span>&nbsp; Open-enrollment plan picker</li>
+      </ul>
+    </div>
+    <div class="card" style="padding: 40px;">
+      <div class="tag">Household</div>
+      <div class="row" style="align-items: baseline; gap: 12px; margin-top: 16px;"><span class="display" style="font-size: 84px;">$99</span><span class="mono muted" style="font-size: 18px;">/ year</span></div>
+      <p class="muted" style="font-size: 21px; margin-top: 6px;">Two jobs, two benefit packages.</p>
+      <ul style="list-style: none; margin-top: 26px; border-top: 1px solid var(--line); padding-top: 22px; display: grid; gap: 12px; font-size: 21px;">
+        <li><span class="money mono">+</span>&nbsp; Compare both employers</li><li><span class="money mono">+</span>&nbsp; Who should cover the kids?</li><li><span class="money mono">+</span>&nbsp; Shared FSA / HSA caps</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card" style="margin-top: 28px; padding: 26px 36px; display: flex; align-items: center; gap: 36px;">
+    <span class="tag" style="white-space: nowrap;">Why they come back</span>
+    <span style="font-size: 22px;">Payday check <span class="dim mono">→</span> FSA balance alerts <span class="dim mono">→</span> Dec 31 deadlines <span class="dim mono">→</span> life events <span class="dim mono">→</span> open enrollment re-scan every November</span>
+  </div>
+  <div class="foot"><span>Free during beta</span><span>07 / 10</span></div>
+</section>
+
+<!-- 08 BUSINESS -->
+<section class="slide">
+  <div class="topbar"><span class="eyebrow">08 / Why it makes money</span><span class="eyebrow">LeftOnTable</span></div>
+  <h2 class="display h2" style="margin-top: 40px;">A <span class="money">$100M ARR</span> path in a market<br>of ~95M covered workers.</h2>
+  <div class="grid" style="grid-template-columns: 1.05fr 1fr; gap: 64px; margin-top: 56px;">
+    <div style="display: grid; gap: 14px;">
+      <div class="card" style="padding: 26px 32px; width: 100%;"><div class="row" style="justify-content: space-between; align-items: baseline;"><span style="font-size: 24px;">US private-sector workers</span><span class="display" style="font-size: 48px;">~135M</span></div></div>
+      <div class="card" style="padding: 26px 32px; width: 90%;"><div class="row" style="justify-content: space-between; align-items: baseline;"><span style="font-size: 24px;">with an employer medical plan (72%)</span><span class="display" style="font-size: 48px;">~95M</span></div></div>
+      <div class="card" style="padding: 26px 32px; width: 72%;"><div class="row" style="justify-content: space-between; align-items: baseline;"><span style="font-size: 24px;">target: 25–45, full-time (est.)</span><span class="display" style="font-size: 48px;">~45M</span></div></div>
+      <div class="card" style="padding: 26px 32px; width: 62%; border-color: rgba(74,222,128,.5); background: rgba(74,222,128,.06);"><div class="row" style="justify-content: space-between; align-items: baseline;"><span style="font-size: 24px;">1.4M subs × $72/yr</span><span class="display money" style="font-size: 48px;">$100M</span></div></div>
+      <p class="src" style="margin-top: 6px;">BLS Employee Benefits Survey, March 2025: 72% of private industry workers have access to medical care plans (87% of full-time). 1.4M = ~3% of the target segment.</p>
+    </div>
+    <div style="display: grid; gap: 20px; align-content: start;">
+      <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div class="card" style="padding: 30px;"><div class="tag">AI cost / scan</div><div class="display money" style="font-size: 64px; margin-top: 10px;">&lt;$0.05</div></div>
+        <div class="card" style="padding: 30px;"><div class="tag">Gross margin</div><div class="display money" style="font-size: 64px; margin-top: 10px;">~90%</div></div>
+        <div class="card" style="padding: 30px;"><div class="tag">LTV (18-mo avg)</div><div class="display" style="font-size: 64px; margin-top: 10px;">~$97</div></div>
+        <div class="card" style="padding: 30px;"><div class="tag">Target CAC</div><div class="display" style="font-size: 64px; margin-top: 10px;">&lt;$30</div></div>
+      </div>
+      <div class="card" style="padding: 30px;">
+        <div class="tag">LTV &gt; CAC because the value is a dollar amount</div>
+        <p style="font-size: 22px; line-height: 1.45; margin-top: 14px;">"I found $3,000 in my benefits" is inherently shareable. Every result has a share-worthy number, open enrollment creates a yearly news cycle, and a $6 plan is easy against thousands found.</p>
+      </div>
+      <p class="src">LTV = $6 × 18 months × 90% margin. CAC and retention are planning assumptions, not measured yet.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Business potential</span><span>08 / 10</span></div>
+</section>
+
+<!-- 09 WHY NEW -->
+<section class="slide">
+  <div class="topbar"><span class="eyebrow">09 / Why it's new</span><span class="eyebrow">LeftOnTable</span></div>
+  <div class="grid" style="grid-template-columns: 1fr 1.5fr; gap: 72px; margin-top: 40px;">
+    <div>
+      <h2 class="display h2">The only one<br>on the <span class="money">employee's</span> side.</h2>
+      <p class="lead" style="margin-top: 28px;">Benefits-guidance tools exist, but they are bought by HR. The company that pays for the tool also pays for the match. We are paid by the person who claims it.</p>
+      <div class="card" style="margin-top: 40px; position: relative; height: 300px; overflow: hidden;">
+        <img class="art" src="../public/art/hands-screen.png"><div class="scan"></div>
+      </div>
+    </div>
+    <div class="card" style="align-self: start;">
+      <table class="tbl">
+        <thead><tr><th style="width: 40%;"></th><th class="r" style="color: var(--money);">Left&shy;On&shy;Table</th><th class="r">HR-bought<br>tools</th><th class="r">Budget<br>apps</th><th class="r">DIY<br>PDF</th></tr></thead>
+        <tbody>
+          <tr><td>Paid by the employee, not HR</td><td class="r check">✓</td><td class="r cross">—</td><td class="r check">✓</td><td class="r cross">free</td></tr>
+          <tr><td>Reads your employer's actual guide</td><td class="r check">✓</td><td class="r check">✓</td><td class="r cross">—</td><td class="r check">✓</td></tr>
+          <tr><td>Available at any employer</td><td class="r check">✓</td><td class="r cross">—</td><td class="r check">✓</td><td class="r check">✓</td></tr>
+          <tr><td>Cross-checks your paycheck</td><td class="r check">✓</td><td class="r cross">—</td><td class="r cross">—</td><td class="r cross">—</td></tr>
+          <tr><td>Dollar value + steps + deadlines</td><td class="r check">✓</td><td class="r cross">partial</td><td class="r cross">—</td><td class="r cross">—</td></tr>
+          <tr><td>Cites the page for every number</td><td class="r check">✓</td><td class="r cross">—</td><td class="r cross">—</td><td class="r cross">—</td></tr>
+          <tr><td>60 seconds, no sign-up</td><td class="r check">✓</td><td class="r cross">—</td><td class="r cross">—</td><td class="r cross">hours</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="foot"><span>Originality</span><span>09 / 10</span></div>
+</section>
+
+<!-- 10 CLOSE -->
+<section class="slide">
+  <div class="halftone" style="-webkit-mask-image: radial-gradient(ellipse at 80% 50%, #000, transparent 60%);"></div>
+  <div class="topbar"><span class="eyebrow">10 / What's next</span><span class="eyebrow">LeftOnTable</span></div>
+  <div class="grid" style="grid-template-columns: 1.2fr 1fr; gap: 72px; margin-top: 40px; position: relative;">
+    <div>
+      <h2 class="display" style="font-size: 92px;">Stop leaving money<br><span class="money">on the table.</span></h2>
+      <div style="margin-top: 56px; display: grid; gap: 20px;">
+        <div style="display:grid; grid-template-columns: 150px 1fr; gap: 28px; align-items: center;"><span class="chip green" style="justify-content: center;">Now</span><span style="font-size: 25px;">Live MVP: guide + paystub scan, 9 checks, plan pricing, cited sources</span></div>
+        <div style="display:grid; grid-template-columns: 150px 1fr; gap: 28px; align-items: center;"><span class="chip" style="justify-content: center;">Next</span><span style="font-size: 25px;">Plus: payroll connection for automatic paycheck monitoring, share card</span></div>
+        <div style="display:grid; grid-template-columns: 150px 1fr; gap: 28px; align-items: center;"><span class="chip" style="justify-content: center;">Later</span><span style="font-size: 25px;">Household mode across two employers, life-event engine, Spanish</span></div>
+      </div>
+      <div class="card" style="margin-top: 56px; padding: 32px 36px;">
+        <div class="tag">Try it in 60 seconds</div>
+        <div class="mono" style="font-size: 28px; margin-top: 14px;">github.com/Futurizm/leftontable</div>
+        <div class="muted" style="font-size: 21px; margin-top: 10px;">Click "Try a sample employee": real AI analysis of a 31-page guide, no sign-up.</div>
+      </div>
+    </div>
+    <div class="card" style="position: relative; height: 760px; overflow: hidden;">
+      <img class="art" src="../public/art/sculptor.png"><div class="scan"></div>
+      <div style="position:absolute; left:0; right:0; bottom:0; padding: 30px 34px; background: linear-gradient(transparent, #000 50%);">
+        <div class="display" style="font-size: 44px;">Your employer already<br>wrote the check.</div>
+        <div class="mono money" style="font-size: 18px; margin-top: 10px;">We help you cash it.</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>LeftOnTable · Track 01 · Money</span><span>10 / 10</span></div>
+</section>
+
+<script>
+  const only = new URLSearchParams(location.search).get("only");
+  if (only) {
+    document.body.classList.add("only");
+    document.querySelectorAll(".slide")[Number(only) - 1]?.classList.add("show");
+  }
+</script>
+</body>
+</html>
