@@ -46,14 +46,28 @@ export function estimateOutOfPocket(plan: MedicalPlan | null, spend: number, tie
     if (m) oopMax = m;
     if (plan.coinsurancePercent != null) coins = plan.coinsurancePercent;
     // Copay-only plans (no coinsurance) still cost something per visit / prescription.
-    if (!coins) coins = COPAY_PROXY;
+    // HDHPs with 0% coinsurance genuinely pay 100% after the deductible, so leave those at 0.
+    if (!coins && plan.type !== "HDHP") coins = COPAY_PROXY;
   }
   const oop = spend <= ded ? spend : ded + (spend - ded) * (coins / 100);
   return Math.min(oop, oopMax);
 }
 
-function annualPremium(plan: MedicalPlan, tier: CoverageTier, paychecks: number): number | null {
-  const p = tierValue(plan.employeePremium, tier);
+/** The salary band whose pay range contains `salary`, when the plan prices premiums by pay. */
+export function premiumBandFor(plan: MedicalPlan, salary: number) {
+  const bands = plan.premiumBands ?? [];
+  if (!bands.length) return null;
+  return bands.find((b) => (b.minAnnualPay ?? -Infinity) <= salary && salary <= (b.maxAnnualPay ?? Infinity)) ?? null;
+}
+
+/** Employee premium per stated period for a coverage tier, honoring salary bands. */
+export function premiumFor(plan: MedicalPlan, tier: CoverageTier, salary: number): number | null {
+  const band = premiumBandFor(plan, salary);
+  return tierValue(band ? band.employeePremium : plan.employeePremium, tier);
+}
+
+function annualPremium(plan: MedicalPlan, tier: CoverageTier, paychecks: number, salary: number): number | null {
+  const p = premiumFor(plan, tier, salary);
   if (p == null) return null;
   switch (plan.premiumPeriod) {
     case "per_paycheck": return p * paychecks;
@@ -93,7 +107,7 @@ export function runEngine(b: BenefitsExtraction, p: Profile): EngineResult {
       const takeHome = perCheck * (1 - rateIncome);
       ops.push({
         key: "401k-match",
-        title: `Unclaimed 401(k) match`,
+        title: `Unclaimed ${r.planName?.match(/403\(b\)|457\(b\)/i)?.[0] ?? "401(k)"} match`,
         category: "retirement",
         annualValue: dollars(gap),
         kind: "counted",
@@ -118,7 +132,7 @@ export function runEngine(b: BenefitsExtraction, p: Profile): EngineResult {
     plan?.hsaEligible ? tierValue(plan.employerAccountContribution, p.coverageTier) ?? tierValue(b.hsa.employerContribution, p.coverageTier) ?? 0 : 0;
 
   const planCosts: PlanCost[] = b.medicalPlans.map((plan, index) => {
-    const premium = annualPremium(plan, p.coverageTier, paychecks);
+    const premium = annualPremium(plan, p.coverageTier, paychecks, p.salary);
     const oop = estimateOutOfPocket(plan, p.expectedMedicalSpend, p.coverageTier);
     const employerAccount = plan.hsaEligible ? employerHsaFor(plan) : tierValue(plan.employerAccountContribution, p.coverageTier) ?? 0;
     const taxSavings = plan.hsaEligible && b.hsa.offered
@@ -127,6 +141,7 @@ export function runEngine(b: BenefitsExtraction, p: Profile): EngineResult {
     return {
       index, name: plan.name, type: plan.type,
       availabilityNote: plan.availabilityNote ?? null,
+      premiumBand: premiumBandFor(plan, p.salary)?.label ?? null,
       premiumAnnual: premium,
       outOfPocket: Math.round(oop),
       employerAccount: Math.round(employerAccount),

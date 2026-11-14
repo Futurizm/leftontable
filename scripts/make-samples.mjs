@@ -3,6 +3,8 @@
 import fs from "node:fs";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { GUIDE } from "./sample-content.mjs";
+import { COMPANIES } from "./samples/companies.mjs";
+import { genericPaystub } from "./samples/paystub.mjs";
 
 const W = 612, H = 792, M = 60, TOP = H - 70, BOTTOM = 64;
 const INK = rgb(0.1, 0.1, 0.12), MUTED = rgb(0.42, 0.42, 0.45), ACCENT = rgb(0.11, 0.42, 0.33), LINE = rgb(0.84, 0.84, 0.86), TINT = rgb(0.93, 0.96, 0.94);
@@ -31,9 +33,10 @@ function wrap(text, font, size, width) {
 }
 
 // ── Benefits guide ──────────────────────────────────────────────
-async function guide() {
+async function guide(opts = {}) {
+  const title = opts.title ?? "Acme Corp 2027 Benefits Guide";
   const doc = await PDFDocument.create();
-  doc.setTitle("Acme Corp 2027 Benefits Guide");
+  doc.setTitle(title);
   doc.setAuthor("Acme Corp People Team (fictional)");
   const f = await fontsFor(doc);
   const toc = [];
@@ -58,6 +61,17 @@ async function guide() {
 
   // Cover
   newPage();
+  if (opts.cover) {
+    const [eyebrow, big, sub, oe] = opts.cover;
+    const [r, g, b] = opts.color;
+    page.drawRectangle({ x: 0, y: 0, width: W, height: H, color: rgb(r, g, b) });
+    page.drawRectangle({ x: M, y: H - 250, width: 46, height: 6, color: rgb(0.95, 0.85, 0.55) });
+    text(eyebrow, M, H - 220, 13, f.b, rgb(0.9, 0.9, 0.9));
+    text(big, M, H - 300, 38, f.b, rgb(1, 1, 1));
+    text(sub, M, H - 335, 14, f.r, rgb(0.88, 0.88, 0.88));
+    text(oe, M, H - 390, 13, f.b, rgb(0.95, 0.85, 0.55));
+    text("FICTIONAL SAMPLE DOCUMENT - created for product testing only", M, 100, 9, f.r, rgb(0.75, 0.75, 0.75));
+  } else {
   page.drawRectangle({ x: 0, y: 0, width: W, height: H, color: rgb(0.07, 0.2, 0.17) });
   page.drawRectangle({ x: M, y: H - 250, width: 46, height: 6, color: rgb(0.55, 0.85, 0.65) });
   text("ACME CORP", M, H - 220, 14, f.b, rgb(0.8, 0.92, 0.85));
@@ -67,9 +81,10 @@ async function guide() {
   text("Open Enrollment: November 2 - November 30, 2026", M, H - 410, 13, f.b, rgb(0.55, 0.85, 0.65));
   text("For full-time U.S. employees", M, 120, 11, f.r, rgb(0.8, 0.88, 0.85));
   text("FICTIONAL SAMPLE DOCUMENT - created for product demonstration only", M, 100, 9, f.r, rgb(0.6, 0.72, 0.68));
+  }
 
   // Content (TOC page inserted afterwards)
-  for (const block of GUIDE) {
+  for (const block of opts.blocks ?? GUIDE) {
     const [kind, a, b, c] = block;
     if (kind === "h1") {
       newPage();
@@ -164,7 +179,7 @@ async function guide() {
   };
   pages.forEach((pg, i) => {
     if (i === 0) return;
-    pg.drawText("Acme Corp 2027 Benefits Guide", { x: M, y: H - 40, size: 8, font: f.b, color: MUTED });
+    pg.drawText(title, { x: M, y: H - 40, size: 8, font: f.b, color: MUTED });
     const s = i === 1 ? "Contents" : sectionOf(i);
     const sw = f.r.widthOfTextAtSize(s, 8);
     pg.drawText(s, { x: W - M - sw, y: H - 40, size: 8, font: f.r, color: MUTED });
@@ -328,8 +343,20 @@ async function paystub() {
   return doc.save();
 }
 
+const DATA = "Data for checking the app";
 fs.mkdirSync("public/samples", { recursive: true });
+fs.mkdirSync(DATA, { recursive: true });
 const g = await guide();
-fs.writeFileSync("public/samples/acme-benefits-guide-2027.pdf", g.bytes);
-fs.writeFileSync("public/samples/acme-paystub-2026-11.pdf", await paystub());
-console.log(`wrote public/samples: guide ${g.pages} pages, paystub 2 pages`);
+const acmeStub = await paystub();
+for (const dir of ["public/samples", DATA]) {
+  fs.writeFileSync(`${dir}/acme-benefits-guide-2027.pdf`, g.bytes);
+  fs.writeFileSync(`${dir}/acme-paystub-2026-11.pdf`, acmeStub);
+}
+console.log(`acme: guide ${g.pages} pages, paystub 2 pages`);
+for (const c of COMPANIES) {
+  const cg = await guide({ title: c.title, blocks: c.guide, cover: c.cover, color: c.color });
+  fs.writeFileSync(`${DATA}/${c.file}.pdf`, cg.bytes);
+  const st = await genericPaystub({ ...c.paystub, accent: c.color });
+  fs.writeFileSync(`${DATA}/${c.stubFile}.pdf`, st.bytes);
+  console.log(`${c.slug}: guide ${cg.pages} pages, paystub net ${st.net} gross ${st.gross}`);
+}

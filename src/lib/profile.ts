@@ -71,9 +71,11 @@ export function guessPlan(b: BenefitsExtraction, s: PaystubExtraction | null, fr
   const n = PAYCHECKS[freq];
   let best: { index: number; tier: CoverageTier; err: number } | null = null;
   b.medicalPlans.forEach((plan, index) => {
-    (["self", "self_spouse", "self_children", "family"] as CoverageTier[]).forEach((tier) => {
-      const v = tierValue(plan.employeePremium, tier);
-      if (v == null || plan.employeePremium[tier] == null) return;
+    // Check the main table and every salary-band table.
+    const tables = [plan.employeePremium, ...(plan.premiumBands ?? []).map((band) => band.employeePremium)];
+    for (const table of tables) (["self", "self_spouse", "self_children", "family"] as CoverageTier[]).forEach((tier) => {
+      const v = tierValue(table, tier);
+      if (v == null || table[tier] == null) return;
       const perCheck = plan.premiumPeriod === "per_paycheck" ? v : plan.premiumPeriod === "monthly" ? (v * 12) / n : plan.premiumPeriod === "annual" ? v / n : null;
       if (perCheck == null || perCheck === 0) return;
       const err = Math.abs(perCheck - ded) / perCheck;

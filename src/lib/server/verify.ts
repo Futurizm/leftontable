@@ -21,6 +21,12 @@ export function verifyEvidence(pages: string[] | null, ev: Evidence | null): Evi
   const order = ev.page && ev.page >= 1 && ev.page <= pages.length ? [ev.page - 1, ...normPages.keys()] : [...normPages.keys()];
   for (const i of order) if (normPages[i].includes(q)) return { ...ev, page: i + 1, verified: true };
 
+  // Quotes stitched from table cells ("Plan A ... $0 ... $210.00"): every fragment must appear on one page.
+  const fragments = ev.quote.split(/\.{3}|…/).map(norm).filter((f) => f.length >= 2);
+  if (fragments.length > 1) {
+    for (const i of order) if (fragments.every((f) => normPages[i].includes(f))) return { ...ev, page: i + 1, verified: true };
+  }
+
   const words = q.split(" ").filter(Boolean);
   if (words.length >= 4) {
     for (const i of order) {

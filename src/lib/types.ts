@@ -29,6 +29,8 @@ export type MedicalPlan = {
   coinsurancePercent: number | null;
   employeePremium: TierAmounts;
   premiumPeriod: "per_paycheck" | "monthly" | "annual" | "unknown";
+  /** Salary-banded premium tables, when the employer prices coverage by pay. */
+  premiumBands?: { label: string; minAnnualPay: number | null; maxAnnualPay: number | null; employeePremium: TierAmounts }[];
   /** Annual employer HSA/HRA seed money tied to this plan. */
   employerAccountContribution: TierAmounts;
   /** Region / group restriction, e.g. "Hawaii only". Null when available to everyone. */
@@ -159,6 +161,8 @@ export type PlanCost = {
   name: string;
   type: MedicalPlan["type"];
   availabilityNote: string | null;
+  /** Label of the salary band used for premiums, if the plan is banded. */
+  premiumBand: string | null;
   premiumAnnual: number | null;
   outOfPocket: number;
   employerAccount: number;

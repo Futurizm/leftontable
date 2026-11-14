@@ -208,6 +208,7 @@ export function Results({ session, setProfile, onRestart }: { session: AnalysisS
                               {best && <span className="text-money">· CHEAPEST FOR YOU</span>}
                             </div>
                             {c.availabilityNote && <div className="mt-0.5 font-mono text-[10px] text-warn">{c.availabilityNote}</div>}
+                            {c.premiumBand && <div className="mt-0.5 font-mono text-[10px] text-dim">Premiums for your pay band: {c.premiumBand}</div>}
                           </td>
                           <td className="px-3 py-3 text-right tnum">{c.premiumAnnual == null ? <span className="text-dim">n/a</span> : usd(c.premiumAnnual)}</td>
                           <td className="px-3 py-3 text-right tnum">{usd(c.outOfPocket)}</td>

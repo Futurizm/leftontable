@@ -65,13 +65,27 @@ export const benefitsSchema = {
           coinsurancePercent: { ...num, description: "In-network share the MEMBER pays after deductible, e.g. 20 for 80/20." },
           employeePremium: { ...tierAmounts, description: "EMPLOYEE share of the premium (what is deducted from pay), not the total or employer cost." },
           premiumPeriod: { type: "string", enum: ["per_paycheck", "monthly", "annual", "unknown"] },
+          premiumBands: {
+            type: "array",
+            description: "Only when employee premiums depend on salary / pay band: one entry per band with its pay range and premiums. Empty array otherwise.",
+            items: {
+              type: "object",
+              properties: {
+                label: { type: "string" },
+                minAnnualPay: num,
+                maxAnnualPay: num,
+                employeePremium: tierAmounts,
+              },
+              required: ["label", "minAnnualPay", "maxAnnualPay", "employeePremium"],
+            },
+          },
           employerAccountContribution: { ...tierAmounts, description: "Annual employer HSA or HRA seed money for this plan. Annualize per-paycheck amounts." },
           availabilityNote: { ...str, description: "If the plan is only available in certain states/regions/service areas or to certain employee groups (e.g. 'Hawaii residents only', 'Kaiser service area', 'union members'), describe it briefly. Null if available to everyone." },
           evidence,
         },
         required: [
           "name", "type", "hsaEligible", "availabilityNote", "deductibleIndividual", "deductibleFamily", "oopMaxIndividual", "oopMaxFamily",
-          "coinsurancePercent", "employeePremium", "premiumPeriod", "employerAccountContribution", "evidence",
+          "coinsurancePercent", "employeePremium", "premiumPeriod", "premiumBands", "employerAccountContribution", "evidence",
         ],
       },
     },
