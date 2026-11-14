@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LeftOnTable
 
-## Getting Started
+**Find the money your employer already promised you.**
 
-First, run the development server:
+US employees get a 30–50 page benefits guide every open enrollment and almost nobody reads it. People miss 401(k) matches, employer HSA money, pre-tax daycare and commuter accounts, stipends, and pick the wrong health plan. LeftOnTable reads the guide (and optionally a paystub), finds what you're not using, prices it in dollars per year, and tells you exactly how to claim it.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **B2C, web-only, no sign-up.** Upload → answer 6 questions → ranked list of money with steps, deadlines and sources.
+- **Every number has a source.** The AI extracts facts with verbatim quotes and page numbers; the server checks each quote against the document text and marks it ✓ verified.
+- **AI extracts, code calculates.** Gemini only reads the documents. All dollar amounts come from a deterministic, unit-testable rules engine with 2026 IRS limits and federal/state/FICA marginal rates (`src/lib/engine.ts`, `src/lib/tax.ts`).
+- **Private by design.** PDFs are parsed in the browser with pdf.js; only page text is sent for analysis. Nothing is stored server-side; the report lives in the browser tab.
+
+## What it checks
+
+401(k)/403(b) match gap · employer HSA seed money · HSA / Health FSA tax savings · Dependent Care FSA · commuter benefits + subsidies · health plan cost comparison for your expected usage · ESPP · tuition reimbursement · stipends and perks (wellness, phone, learning, student loans…) · free perks (EAP, legal, backup care).
+
+## Architecture
+
+```
+Browser                                   Server (Next.js route)            Vertex AI
+───────                                   ──────────────────────            ─────────
+PDF ─► pdf.js text per page ─► POST /api/extract ─► Gemini 3.5 Flash (JSON schema)
+                                           ◄─ verify quotes against pages ◄─┘
+facts + profile ─► rules engine (client, instant recalculation) ─► results UI
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- `src/app/api/extract/route.ts` – extraction endpoint (benefits guide or paystub; scanned PDFs / photos fall back to multimodal input)
+- `src/lib/server/schemas.ts`, `prompts.ts` – structured-output schema and extraction rules
+- `src/lib/server/verify.ts` – evidence verification and page correction
+- `src/lib/engine.ts` – opportunity calculations, plan comparison
+- `src/components/scan/*` – upload → paystub → profile → results flow
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Run locally
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm install
+cp .env.example .env.local   # fill GOOGLE_SERVICE_ACCOUNT_BASE64
+npm run dev
+```
 
-## Learn More
+Open http://localhost:3000 and click **Try a sample employee** (fictional Acme Corp guide + paystub in `public/samples`, regenerate with `npm run samples`).
 
-To learn more about Next.js, take a look at the following resources:
+Test extraction against any PDF from the command line (dev server must be running):
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+node scripts/test-extract.mjs path/to/benefits-guide.pdf
+node scripts/test-extract.mjs path/to/paystub.pdf paystub
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Tested on public 2026 guides from ADP TotalSource (38 pages), Bentley University (24), DC Government (47), LLNL (32), The Ford Family Foundation (1), with 100% of evidence quotes verified.
 
-## Deploy on Vercel
+## Deploy (Vercel)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Import the repo in Vercel.
+2. Add env vars `GOOGLE_SERVICE_ACCOUNT_BASE64` and `GOOGLE_CLOUD_LOCATION=global`.
+3. Deploy. The extraction route uses `maxDuration = 120`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Disclaimer
+
+Educational estimates, not tax, legal or investment advice. The Acme Corp sample documents are fictional.
