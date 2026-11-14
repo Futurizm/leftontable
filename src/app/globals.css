@@ -168,6 +168,15 @@ body {
   animation: rise 0.5s ease both;
 }
 
+@keyframes lot-slide {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(300%);
+  }
+}
+
 @keyframes scan {
   from {
     transform: translateY(-100%);

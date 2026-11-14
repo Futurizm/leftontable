@@ -42,6 +42,50 @@ function StepBar({ step }: { step: Step }) {
   );
 }
 
+function DocsLoadingOverlay({ guide, paystub }: { guide: DocState | null; paystub: DocState | null }) {
+  const row = (label: string, d: DocState | null) => {
+    if (!d) return null;
+    const done = d.status === "done";
+    const err = d.status === "error";
+    const text = done
+      ? "done"
+      : err
+        ? "couldn't read, you can still continue"
+        : d.status === "reading"
+          ? `opening${d.progress ? ` ${d.progress[0]}/${d.progress[1]} pages` : ""}`
+          : `AI is reading${d.pageCount ? ` ${d.pageCount} pages` : ""}`;
+    return (
+      <li className="flex items-center gap-3">
+        {done ? (
+          <span className="flex h-4 w-4 items-center justify-center text-money">✓</span>
+        ) : err ? (
+          <span className="flex h-4 w-4 items-center justify-center text-warn">!</span>
+        ) : (
+          <span className="h-4 w-4 animate-spin rounded-full border-2 border-line-2 border-t-fg" aria-hidden />
+        )}
+        <span className={done ? "text-money" : err ? "text-warn" : "text-fg"}>{label}</span>
+        <span className="text-dim">· {text}</span>
+      </li>
+    );
+  };
+  return (
+    <div className="absolute inset-0 flex items-start justify-center bg-black/55 p-6 pt-10 backdrop-blur-[1px] sm:pt-14" role="status" aria-live="polite">
+      <div className="halftone pointer-events-none absolute inset-0 opacity-30" />
+      <div className="relative w-full max-w-sm border border-line-2 bg-black/90 p-6">
+        <div className="eyebrow">Reading your documents</div>
+        <p className="mt-2 text-[14px] text-fg/90">We&apos;ll fill in what we can from them. This takes about 10–20 seconds.</p>
+        <ul className="mt-5 space-y-2.5 font-mono text-[12px]">
+          {row("Benefits guide", guide)}
+          {row("Paystub", paystub)}
+        </ul>
+        <div className="mt-5 h-0.5 overflow-hidden bg-line">
+          <div className="h-full w-1/3 bg-fg" style={{ animation: "lot-slide 1.4s ease-in-out infinite" }} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Analyzing({ guide, paystub, onRetry }: { guide: DocState | null; paystub: DocState | null; onRetry: () => void }) {
   const [t, setT] = useState(0);
   useEffect(() => {
@@ -258,6 +302,11 @@ export function ScanFlow() {
     window.scrollTo({ top: 0 });
   };
 
+  // The form stays locked until the documents are read, so autofill can't overwrite what the user types
+  // and nobody submits half-filled answers.
+  const isBusy = (d: DocState | null) => !!d && (d.status === "reading" || d.status === "extracting");
+  const docsLoading = isBusy(guide) || isBusy(paystub);
+
   const go = (s: Step) => {
     setStep(s);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -346,12 +395,24 @@ export function ScanFlow() {
               {paystub && <span className={paystub.status === "done" ? "text-money" : paystub.status === "error" ? "text-warn" : "text-muted"}>{paystub.status === "done" ? "✓" : paystub.status === "error" ? "!" : "…"} Paystub: {paystub.status === "done" ? "read" : paystub.status === "error" ? paystub.error : "reading"}</span>}
             </div>
           )}
-          <div className="card mt-8 p-5 sm:p-7">
-            <ProfileFields profile={profile} set={setProfile} benefits={benefits} plansLoading={guide?.status !== "done"} detected={detected} />
+          <div className="card relative mt-8 overflow-hidden" aria-busy={docsLoading}>
+            <div className={`p-5 transition duration-300 sm:p-7 ${docsLoading ? "pointer-events-none select-none opacity-25 blur-[2px]" : ""}`} inert={docsLoading}>
+              <ProfileFields profile={profile} set={setProfile} benefits={benefits} plansLoading={guide?.status !== "done"} detected={detected} />
+            </div>
+            {docsLoading && <DocsLoadingOverlay guide={guide} paystub={paystub} />}
           </div>
           <div className="mt-6 flex items-center justify-between gap-4">
             <button className="btn btn-ghost" onClick={() => go(isSample ? "guide" : "paystub")} disabled={isSample}>← Back</button>
-            <button className="btn btn-primary" onClick={() => go(guide?.status === "error" ? "guide" : "analyzing")} disabled={!guide}>Show my money →</button>
+            <button className="btn btn-primary" onClick={() => go(guide?.status === "error" ? "guide" : "analyzing")} disabled={!guide || docsLoading}>
+              {docsLoading ? (
+                <>
+                  <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-black/25 border-t-black" aria-hidden />
+                  Reading your documents…
+                </>
+              ) : (
+                "Show my money →"
+              )}
+            </button>
           </div>
         </section>
       )}
