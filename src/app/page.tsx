@@ -3,11 +3,11 @@ import Link from "next/link";
 import { SiteFooter, SiteHeader } from "@/components/brand";
 
 const FOUND = [
-  { label: "Cheaper health plan for how you use care", value: "+$3,024", page: "p.2" },
-  { label: "Daycare through the Dependent Care FSA", value: "+$1,845", page: "p.3" },
-  { label: "401(k) match you're not collecting", value: "+$1,800", page: "p.4" },
-  { label: "Commuter subsidy + pre-tax transit", value: "+$1,525", page: "p.3" },
-  { label: "Learning, wellness & phone stipends", value: "+$2,080", page: "p.5" },
+  { label: "Cheaper health plan for how you use care", value: "+$3,024", page: "p.8" },
+  { label: "Daycare through the Dependent Care FSA", value: "+$1,845", page: "p.13" },
+  { label: "401(k) match you're not collecting", value: "+$1,800", page: "p.21" },
+  { label: "Commuter subsidy + pre-tax transit", value: "+$1,525", page: "p.15" },
+  { label: "Wellness credit, stipends & learning", value: "+$2,380", page: "p.25" },
 ];
 
 const WHY = [
@@ -128,14 +128,14 @@ export default function Home() {
               <div className="relative min-h-[260px] border-b border-line bg-black md:border-r md:border-b-0">
                 <Image src="/art/hand-laptop.png" alt="" fill priority sizes="(max-width: 768px) 100vw, 560px" className="art object-cover object-center" />
                 <div className="scanlines absolute inset-0" />
-                <span className="eyebrow absolute top-4 left-4">scan · acme corp guide · 7 pages</span>
+                <span className="eyebrow absolute top-4 left-4">scan · acme corp guide · 31 pages</span>
               </div>
               <div className="p-6 sm:p-8">
                 <div className="flex items-center justify-between">
                   <span className="eyebrow">Left on the table</span>
                   <span className="font-mono text-[11px] text-dim">2026</span>
                 </div>
-                <div className="font-display money mt-2 text-5xl font-bold sm:text-6xl">$10,692<span className="text-2xl text-muted">/yr</span></div>
+                <div className="font-display money mt-2 text-5xl font-bold sm:text-6xl">$10,992<span className="text-2xl text-muted">/yr</span></div>
                 <ul className="mt-6 divide-y divide-line border-y border-line">
                   {FOUND.map((f) => (
                     <li key={f.label} className="flex items-center justify-between gap-3 py-3 text-[14px]">

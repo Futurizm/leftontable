@@ -302,7 +302,8 @@ export function runEngine(b: BenefitsExtraction, p: Profile): EngineResult {
   const optionalCats = new Set(["student_loan", "family_building", "childcare", "discounts"]);
   const freePerks: Perk[] = [];
   b.perks.forEach((perk, i) => {
-    if (!perk.annualValue || perk.annualValue <= 0) {
+    // Coverage maximums (fertility, adoption) are not money you can "claim"; list them as perks instead.
+    if (!perk.annualValue || perk.annualValue <= 0 || perk.category === "family_building") {
       freePerks.push(perk);
       return;
     }
