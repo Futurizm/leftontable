@@ -111,6 +111,9 @@ export function Results({ session, setProfile, onRestart }: { session: AnalysisS
         <div className="halftone pointer-events-none absolute inset-0 opacity-60 [mask-image:radial-gradient(ellipse_at_80%_50%,black,transparent_65%)]" />
         <div className="relative grid items-center gap-10 lg:grid-cols-[1.4fr_1fr]">
           <div>
+            <div className="no-print mb-6">
+              <button onClick={onRestart} className="font-mono text-[11px] tracking-[0.12em] text-muted uppercase hover:text-fg">← Scan new documents</button>
+            </div>
             <div className="eyebrow">{b.employerName ?? "Your employer"} · {b.planYear ?? "2026"} benefits{session.sample ? " · sample" : ""}</div>
             <div className="mt-5 text-[15px] text-muted">You&apos;re leaving</div>
             <div className="font-display money mt-1 text-[64px] leading-none font-bold sm:text-[92px]">{usd(result.total)}</div>

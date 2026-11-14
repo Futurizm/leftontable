@@ -108,9 +108,17 @@ export function ScanFlow() {
     setProfileState((p) => ({ ...p, ...patch }));
   };
 
-  // Restore a previous result in this tab.
+  // Restore a previous result in this tab (e.g. after a reload). Links that say "scan" open /scan?new=1,
+  // which always starts a fresh scan.
   useEffect(() => {
     if (params.get("sample")) return;
+    if (params.get("new")) {
+      try {
+        sessionStorage.removeItem(STORE);
+      } catch {}
+      router.replace("/scan");
+      return;
+    }
     try {
       const raw = sessionStorage.getItem(STORE);
       if (raw) {
@@ -260,7 +268,15 @@ export function ScanFlow() {
       <div className="no-print sticky top-0 z-40 border-b border-line bg-black/80 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
           <Link href="/" className="font-display text-[17px] font-bold">LeftOnTable</Link>
-          <StepBar step={step} />
+          <div className="flex items-center gap-3 sm:gap-5">
+            <StepBar step={step} />
+            {step === "results" && (
+              <button onClick={restart} className="btn btn-primary btn-sm">
+                <span className="hidden sm:inline">+ New scan</span>
+                <span className="sm:hidden">+ New</span>
+              </button>
+            )}
+          </div>
         </div>
       </div>
 

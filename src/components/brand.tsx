@@ -32,7 +32,7 @@ export function SiteHeader() {
           <Link href="/#pricing" className="hover:text-fg">Pricing</Link>
           <Link href="/#faq" className="hover:text-fg">FAQ</Link>
         </nav>
-        <Link href="/scan" className="btn btn-primary btn-sm">Scan free</Link>
+        <Link href="/scan?new=1" className="btn btn-primary btn-sm">Scan free</Link>
       </div>
     </header>
   );

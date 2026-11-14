@@ -61,7 +61,7 @@ const PLANS = [
     blurb: "One full report, whenever you need it.",
     features: ["Full benefits scan", "Paystub cross-check", "Step-by-step claim plan", "Calendar deadlines"],
     cta: "Start free scan",
-    href: "/scan",
+    href: "/scan?new=1",
     highlight: false,
   },
   {
@@ -71,7 +71,7 @@ const PLANS = [
     blurb: "Keeps checking after every payday.",
     features: ["Everything in Scan", "Paycheck monitoring each payday", "Use-it-or-lose-it FSA alerts", "Life events: baby, marriage, move", "Open-enrollment plan picker"],
     cta: "Free during beta",
-    href: "/scan",
+    href: "/scan?new=1",
     highlight: true,
   },
   {
@@ -81,7 +81,7 @@ const PLANS = [
     blurb: "Two jobs, two benefit packages.",
     features: ["Everything in Plus", "Compare both employers' plans", "Who should cover the kids?", "Shared FSA & HSA caps handled"],
     cta: "Free during beta",
-    href: "/scan",
+    href: "/scan?new=1",
     highlight: false,
   },
 ];
@@ -116,7 +116,7 @@ export default function Home() {
               Upload your benefits guide. AI reads the fine print, checks it against your paycheck, and shows how much money you&apos;re leaving on the table, and exactly how to claim it.
             </p>
             <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Link href="/scan" className="btn btn-primary w-full sm:w-auto">Scan my benefits, free →</Link>
+              <Link href="/scan?new=1" className="btn btn-primary w-full sm:w-auto">Scan my benefits, free →</Link>
               <Link href="/scan?sample=acme" className="btn btn-ghost w-full sm:w-auto">Try a sample employee</Link>
             </div>
             <p className="mt-4 font-mono text-[11px] text-dim">No sign-up · nothing stored · about 60 seconds</p>
@@ -245,7 +245,7 @@ export default function Home() {
           <div className="relative mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 py-20 text-center sm:px-6">
             <h2 className="font-display max-w-3xl text-3xl font-bold sm:text-5xl">Open enrollment closes soon. Your elections lock for a year.</h2>
             <p className="max-w-xl text-muted">Most benefit choices can only change once a year. A 60-second scan now beats twelve months of overpaying.</p>
-            <Link href="/scan" className="btn btn-primary">Find my money →</Link>
+            <Link href="/scan?new=1" className="btn btn-primary">Find my money →</Link>
           </div>
         </section>
 
@@ -289,7 +289,7 @@ export default function Home() {
               <h2 className="font-display mt-3 text-4xl font-bold">Fair questions.</h2>
               <p className="mt-3 font-mono text-[13px] text-muted">Still curious?</p>
               <div className="mt-6 flex gap-3">
-                <Link href="/scan" className="btn btn-primary btn-sm">Start a scan</Link>
+                <Link href="/scan?new=1" className="btn btn-primary btn-sm">Start a scan</Link>
                 <Link href="/scan?sample=acme" className="btn btn-ghost btn-sm">See a sample</Link>
               </div>
             </div>
