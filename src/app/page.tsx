@@ -95,10 +95,27 @@ const FAQ = [
   ["Is this financial advice?", "No. It's an educational estimate to help you ask the right questions. Always confirm with your plan administrator before changing elections."],
 ];
 
+const TEST_DOCS_URL = "https://github.com/Futurizm/leftontable/tree/main/Data%20for%20checking%20the%20app";
+
+/** Quiet strip pointing reviewers to ready-made test documents. */
+function TestDocsNotice() {
+  return (
+    <div className="border-b border-line bg-panel">
+      <div className="mx-auto flex max-w-6xl flex-col items-center justify-center gap-1 px-4 py-2.5 text-center font-mono text-[11px] text-muted sm:flex-row sm:gap-3 sm:px-6">
+        <span className="text-dim">Need documents to test with?</span>
+        <a href={TEST_DOCS_URL} target="_blank" rel="noopener noreferrer" className="underline decoration-line-2 underline-offset-4 transition hover:text-fg hover:decoration-fg">
+          Grab sample benefits guides &amp; paystubs on our GitHub ↗
+        </a>
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   return (
     <>
       <SiteHeader />
+      <TestDocsNotice />
       <main>
         {/* HERO */}
         <section className="relative overflow-hidden">
